@@ -3,7 +3,7 @@ package com.example.indiv1;
 import android.app.Activity;
 import android.os.Bundle;
 
-  // Your project's R class
+ import com.example.indiv1.R; // Your project's R class
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
@@ -37,18 +37,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-      switch (item.getItemId()){
-          case R.id.setting:
-              Toast.makeText(MainActivity.this, "setting", Toast.LENGTH_SHORT).show();
-              return true;
+        int id = item.getItemId();
+        if (id == R.id.setting) {
+            Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == R.id.languge) {
+            Toast.makeText(this, "language", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
 
-          case R.id.languge:
-              Toast.makeText(MainActivity.this, "language", Toast.LENGTH_SHORT).show();
-              return true;
-          default:
-              return super.onOptionsItemSelected(item);
-
-      }
     }
 
     @Override
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-
+        setSupportActionBar(findViewById(R.id.toolbar));
         //iniialize date picker from layout
         DatePicker datepicker= findViewById(R.id.datepicker);
         //geting today's date
