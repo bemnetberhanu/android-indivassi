@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/item1"
-        android:title="settings"/>
+        android:id="@+id/setting"
+        android:title="settings">
+
+        <menu>
+            <item
+                android:id="@+id/languge"
+                android:title="languge">
+            </item>
+
+        </menu>
+
+    </item>
 </menu>
