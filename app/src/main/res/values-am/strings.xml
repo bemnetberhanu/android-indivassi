@@ -3,6 +3,7 @@
     <string name="app_name">indiv 1</string>
 
 
+    <string name="select_language">ቋንቋ ይምረጡ</string>
     <string name="SELECT_IMAGE">ፎቶ ምረጥ</string>
     <string name="change_languge">ቋንቋ ቀይር</string>
     <string name="ISSUED_DATE">የተሰጠበት ቀን</string>

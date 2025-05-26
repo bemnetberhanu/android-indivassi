@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">indiv 1</string>
 
+
+    <string name="select_language">Choose Language</string>
+
     <string name="SELECT_IMAGE">SELECT_IMAGE</string>
     <string name="change_languge">change_languge</string>
     <string name="ISSUED_DATE">ISSUED_DATE</string>
