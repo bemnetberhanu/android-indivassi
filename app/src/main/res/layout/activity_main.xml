@@ -105,11 +105,14 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:srcCompat="@drawable/baseline_photo_camera_24" />
 
-    <Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="303dp"
-        android:layout_height="34dp"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="2dp" />
-
+    <Button
+        android:id="@+id/btnChangelanguge"
+        android:layout_width="164dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="116dp"
+        android:text="@string/change_languge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.101"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

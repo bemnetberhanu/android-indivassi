@@ -1,6 +1,11 @@
 package com.example.indiv1;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.net.wifi.hotspot2.ConfigParser;
 import android.os.Bundle;
 
  import com.example.indiv1.R; // Your project's R class
@@ -23,6 +28,7 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,9 +59,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
 
-        setSupportActionBar(findViewById(R.id.toolbar));
+        locallanguge();
+        findViewById(R.id.btnChangelanguge).setOnClickListener(view ->{
+            showChangeLanguageDialog();
+        });
+
+
         //iniialize date picker from layout
         DatePicker datepicker= findViewById(R.id.datepicker);
         //geting today's date
@@ -97,5 +107,55 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void showChangeLanguageDialog() {
+        final String[] languages = {"English", "Amharic"};
+        final String[] languageCodes = {"en", "am"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(getString(R.string.select_languge));
+        builder.setSingleChoiceItems(languages, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int postion) {
+              if(postion == 0){
+                  setLanguage("en",0);
+                  recreate();
+              }else if(postion == 1){
+                  setLanguage("am",1);
+                  recreate();
+              }
+              dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("close",new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alterDialog = builder.create();
+        alterDialog.show();
+    }
+
+    private void setLanguage(String en, int i) {
+        Locale locale =  new Locale(en);
+        Locale.setDefault(locale);
+        Configuration configuration = new Configuration();
+        configuration.locale = locale;
+        getBaseContext().getResources().updateConfiguration(configuration,getBaseContext().getResources().getDisplayMetrics());
+
+
+        SharedPreferences.Editor editor = getSharedPreferences("Languge_Settings",MODE_PRIVATE).edit();
+        editor.putString("Languge",en);
+        editor.putInt("position",i);
+        editor.apply();
+
+    }
+
+    private void locallanguge(){
+        SharedPreferences sharedPreferences = getSharedPreferences("Languge_Settings",MODE_PRIVATE);
+        String languge = sharedPreferences.getString("Languge","en");
+        int position = sharedPreferences.getInt("position",0);
+        setLanguage(languge,position);
     }
 }
