@@ -2,9 +2,9 @@
 <resources>
     <string name="app_name">indiv 1</string>
 
-    <string name="select_languge">select_languge</string>
+    <string name="SELECT_IMAGE">SELECT_IMAGE</string>
     <string name="change_languge">change_languge</string>
-    <string name="send_otp">send_otp</string>
-    <string name="enter_your_number">enter_your_number</string>
-    <string name="number">number</string>
+    <string name="ISSUED_DATE">ISSUED_DATE</string>
+    <string name="YOUR_ID">YOUR_ID</string>
+    <string name="NAME">NAME</string>
 </resources>

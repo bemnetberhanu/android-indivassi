@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main); // Match your XML filename
 
 
         locallanguge();
@@ -110,10 +111,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showChangeLanguageDialog() {
-        final String[] languages = {"English", "Amharic"};
-        final String[] languageCodes = {"en", "am"};
+
+        final String[] languages = {"en", "am"};
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle(getString(R.string.select_languge));
+        builder.setTitle(getString(R.string.change_languge));
         builder.setSingleChoiceItems(languages, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int postion) {

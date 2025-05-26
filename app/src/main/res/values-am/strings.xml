@@ -3,9 +3,9 @@
     <string name="app_name">indiv 1</string>
 
 
-    <string name="select_languge">select_languge</string>
-    <string name="change_languge">change_languge</string>
-    <string name="send_otp">send_otp</string>
-    <string name="enter_your_number">enter_your_number</string>
-    <string name="number">number</string>
+    <string name="SELECT_IMAGE">ፎቶ ምረጥ</string>
+    <string name="change_languge">ቋንቋ ቀይር</string>
+    <string name="ISSUED_DATE">የተሰጠበት ቀን</string>
+    <string name="YOUR_ID">መለያ ቁጥር</string>
+    <string name="NAME">ስም</string>
 </resources>
