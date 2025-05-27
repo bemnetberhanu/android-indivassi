@@ -9,4 +9,10 @@
     <string name="ISSUED_DATE">ISSUED_DATE</string>
     <string name="YOUR_ID">YOUR_ID</string>
     <string name="NAME">NAME</string>
+
+
+    <string name="submit">Submit</string>
+    <string name="display_name">Name: %s</string>
+    <string name="display_id">ID: %s</string>
+    <string name="display_date">Issued Date: %s</string>
 </resources>

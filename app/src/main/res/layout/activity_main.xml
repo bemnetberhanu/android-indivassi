@@ -14,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="668dp"
-        android:text="NAME"
-        android:name="@string/NAME"
+        android:text="@string/NAME"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -35,8 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="YOUR ID"
-        android:name="@string/YOUR_ID"
+        android:text="@string/YOUR_ID"
+
         app:layout_constraintBottom_toTopOf="@+id/inputid"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -56,8 +56,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="ISSUED DATE"
-        android:name="@string/ISSUED_DATE"
+        android:text="@string/ISSUED_DATE"
+
         app:layout_constraintBottom_toTopOf="@+id/datepicker"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -77,8 +77,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginBottom="308dp"
-        android:text="SELECT IMAGE"
-        android:name="@string/SELECT_IMAGE"
+        android:text="@string/SELECT_IMAGE"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -111,13 +111,23 @@
 
     <Button
         android:id="@+id/btnChangelanguge"
+        android:name="@string/change_languge"
         android:layout_width="197dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="116dp"
+        android:layout_marginBottom="96dp"
         android:text="change languge"
-        android:name="@string/change_languge"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.101"
+        app:layout_constraintHorizontal_bias="0.228"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

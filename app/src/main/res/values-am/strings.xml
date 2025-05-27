@@ -9,4 +9,10 @@
     <string name="ISSUED_DATE">የተሰጠበት ቀን</string>
     <string name="YOUR_ID">መለያ ቁጥር</string>
     <string name="NAME">ስም</string>
+    <string name="submit">አስገባ</string>
+
+
+    <string name="display_name">ስም %s</string>
+    <string name="display_id">መለያ ቁጥር: %s</string>
+    <string name="display_date">የተሰጠበት ቀን: %s</string>
 </resources>

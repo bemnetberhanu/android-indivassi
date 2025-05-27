@@ -3,15 +3,24 @@ package com.example.indiv1;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Toast;
+import com.example.indiv1.R;
+import com.example.indiv1.databinding.ActivityMainBinding;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -23,23 +32,31 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private ActivityResultLauncher<Intent> resultLauncher;
+    Uri uri;
+    ActivityMainBinding binding;
+
     @Override
     protected void attachBaseContext(Context newBase) {
-        SharedPreferences prefs = newBase.getSharedPreferences("Languge_Settings", MODE_PRIVATE);
-        String language = prefs.getString("Languge", "en");
-        Context context = LocaleHelper.setLocale(newBase, language);
-        super.attachBaseContext(context);
+        SharedPreferences prefs = newBase.getSharedPreferences("Language_Settings", MODE_PRIVATE);
+        String language = prefs.getString("Language", "en");
+        Log.d("Language", "Current Language: " + language);
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, language));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View v = binding.getRoot();
+        setContentView(v);
 
-        findViewById(R.id.btnChangelanguge).setOnClickListener(view -> showChangeLanguageDialog());
-
+        binding.btnChangelanguge.setOnClickListener(view -> showChangeLanguageDialog());
+        register();
+        binding.floatingActionButton.setOnClickListener(ve -> selectImage());
         // Initialize date picker
-        DatePicker datePicker = findViewById(R.id.datepicker);
+        DatePicker datePicker = binding.datepicker;
         Calendar today = Calendar.getInstance();
         datePicker.init(
                 today.get(Calendar.YEAR),
@@ -51,17 +68,48 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        // Photo picker setup
-        ActivityResultLauncher<PickVisualMediaRequest> pickMediaLauncher =
-                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-                    if (uri != null) {
-                        Log.d("photoPicker", "Selected URI: " + uri);
-                    } else {
-                        Log.d("photoPicker", "No media selected");
-                    }
-                });
+
+
+        // Set click listener for submit button
+        findViewById(R.id.btnSubmit).setOnClickListener(view -> {
+            // Get all input values
+            EditText nameInput = findViewById(R.id.input);
+            EditText idInput = findViewById(R.id.inputid);
+            DatePicker DatePicker = findViewById(R.id.datepicker);
+
+            String name = nameInput.getText().toString();
+            String id = idInput.getText().toString();
+            String date = DatePicker.getDayOfMonth() + "/" + (DatePicker.getMonth() + 1) + "/" + DatePicker.getYear();
+
+            // Start DisplayActivity with the data
+            Intent intent = new Intent(MainActivity.this, DisplayActivity.class);
+            intent.putExtra("name", name);
+            intent.putExtra("id", id);
+            intent.putExtra("date", date);
+            intent.putExtra("imageUri", uri);
+            startActivity(intent);
+        });
 
         // To use: pickMediaLauncher.launch(new PickVisualMediaRequest.Builder().setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE).build());
+    }
+
+    private void selectImage(){
+        Intent intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
+        resultLauncher.launch(intent);
+    }
+
+    private void register(){
+        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult o) {
+                try {
+                    uri = o.getData().getData();
+
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "no image selected", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -101,9 +149,20 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
     private void setLanguage(String languageCode, int position) {
+
+        Log.d("LanguageDebug", "Setting language to: " + languageCode);
+
         SharedPreferences.Editor editor = getSharedPreferences("Languge_Settings", MODE_PRIVATE).edit();
         editor.putString("Languge", languageCode);
         editor.putInt("position", position);
         editor.apply();
+
+        LocaleHelper.setLocale(this, languageCode);
+
+        Intent refresh = new Intent(this, MainActivity.class);
+        refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(refresh);
+        finish();
     }
+
 }
