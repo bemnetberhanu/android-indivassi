@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -133,36 +134,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showChangeLanguageDialog() {
-        final String[] languages = {"English", "አማርኛ"};
-        final String[] languagecode = {"en", "am"};
-        SharedPreferences prefs = getSharedPreferences("Languge_Settings", MODE_PRIVATE);
-        int currentSelection = prefs.getInt("position", 0);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        final String[] languageList = {"English", "Amharic"} ;
+        SharedPreferences sharedPreferences = getSharedPreferences("LANG", MODE_PRIVATE);
+        int item = sharedPreferences.getInt("item", 0);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.select_language));
-        builder.setSingleChoiceItems(languages, currentSelection, (dialog, position) -> {
-            setLanguage(languages[position], position);
-            recreate(); // recreate activity to apply change
-            dialog.dismiss();
+        builder.setSingleChoiceItems(languageList, item, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(i == 0){
+                    setLanguage("en",0);
+                    recreate();
+                }
+                else if (i == 1 ){
+                    setLanguage("am",1);
+                    recreate();
+                }
+                dialogInterface.dismiss();
+            }
         });
-        builder.setNegativeButton("Close", (dialog, which) -> dialog.dismiss());
-        builder.show();
+
+        builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
-    private void setLanguage(String languageCode, int position) {
+    private void setLanguage(String language, int item) {
 
-        Log.d("LanguageDebug", "Setting language to: " + languageCode);
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Configuration configuration = new Configuration();
+        configuration.locale = locale;
+        getBaseContext().getResources().updateConfiguration(configuration, getBaseContext().getResources().getDisplayMetrics());
 
-        SharedPreferences.Editor editor = getSharedPreferences("Languge_Settings", MODE_PRIVATE).edit();
-        editor.putString("Languge", languageCode);
-        editor.putInt("position", position);
+        SharedPreferences.Editor  editor = getSharedPreferences("LANG", MODE_PRIVATE).edit();
+        editor.putString("language",language);
+        editor.putInt("item",item);
         editor.apply();
-
-        LocaleHelper.setLocale(this, languageCode);
-
-        Intent refresh = new Intent(this, MainActivity.class);
-        refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(refresh);
-        finish();
     }
 
 }
