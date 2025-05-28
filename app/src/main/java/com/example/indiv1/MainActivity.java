@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -47,56 +48,79 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        View v = binding.getRoot();
-        setContentView(v);
-
-        binding.btnChangelanguge.setOnClickListener(view -> showChangeLanguageDialog());
-        register();
-        binding.floatingActionButton.setOnClickListener(ve -> selectImage());
-        // Initialize date picker
-        DatePicker datePicker = binding.datepicker;
-        Calendar today = Calendar.getInstance();
-        datePicker.init(
-                today.get(Calendar.YEAR),
-                today.get(Calendar.MONTH),
-                today.get(Calendar.DAY_OF_MONTH),
-                (view, year, monthOfYear, dayOfMonth) -> {
-                    String msg = "The issued date is " + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                }
-        );
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            binding = ActivityMainBinding.inflate(getLayoutInflater());
+            View v = binding.getRoot();
+            setContentView(v);
 
 
 
-        // Set click listener for submit button
-        findViewById(R.id.btnSubmit).setOnClickListener(view -> {
-            // Get all input values
-            EditText nameInput = findViewById(R.id.input);
-            EditText idInput = findViewById(R.id.inputid);
-            DatePicker DatePicker = findViewById(R.id.datepicker);
+            if(savedInstanceState != null){
+                binding.input.setText(savedInstanceState.getString("name"));
+                binding.inputid.setText(savedInstanceState.getString("id"));
+                uri = savedInstanceState.getParcelable("imageUri");
 
-            String name = nameInput.getText().toString();
-            String id = idInput.getText().toString();
-            String date = DatePicker.getDayOfMonth() + "/" + (DatePicker.getMonth() + 1) + "/" + DatePicker.getYear();
+            }
 
-            // Start DisplayActivity with the data
-            Intent intent = new Intent(MainActivity.this, DisplayActivity.class);
-            intent.putExtra("name", name);
-            intent.putExtra("id", id);
-            intent.putExtra("date", date);
-            intent.putExtra("imageUri", uri);
-            startActivity(intent);
-        });
+            binding.btnChangelanguge.setOnClickListener(view -> showChangeLanguageDialog());
+            register();
+            binding.floatingActionButton.setOnClickListener(ve -> selectImage());
+            // Initialize date picker
+            DatePicker datePicker = binding.datepicker;
+            Calendar today = Calendar.getInstance();
+            datePicker.init(
+                    today.get(Calendar.YEAR),
+                    today.get(Calendar.MONTH),
+                    today.get(Calendar.DAY_OF_MONTH),
+                    (view, year, monthOfYear, dayOfMonth) -> {
+                        String msg = "The issued date is " + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+            );
 
-        // To use: pickMediaLauncher.launch(new PickVisualMediaRequest.Builder().setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE).build());
-    }
+
+
+            // Set click listener for submit button
+            findViewById(R.id.btnSubmit).setOnClickListener(view -> {
+                // Get all input values
+                EditText nameInput = findViewById(R.id.input);
+                EditText idInput = findViewById(R.id.inputid);
+                DatePicker DatePicker = findViewById(R.id.datepicker);
+
+                String name = nameInput.getText().toString();
+                String id = idInput.getText().toString();
+                String date = DatePicker.getDayOfMonth() + "/" + (DatePicker.getMonth() + 1) + "/" + DatePicker.getYear();
+
+                // Start DisplayActivity with the data
+                Intent intent = new Intent(MainActivity.this, DisplayActivity.class);
+                intent.putExtra("name", name);
+                intent.putExtra("id", id);
+                intent.putExtra("date", date);
+                intent.putExtra("imageUri", uri);
+                startActivity(intent);
+            });
+
+            // To use: pickMediaLauncher.launch(new PickVisualMediaRequest.Builder().setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE).build());
+        }
 
     private void selectImage(){
         Intent intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
         resultLauncher.launch(intent);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+
+        String name = binding.input.getText().toString();
+        String id = binding.inputid.getText().toString();
+        String date = binding.datepicker.getDayOfMonth() + "/" + (binding.datepicker.getMonth() + 1) + "/" + binding.datepicker.getYear();
+        outState.putString("name", name);
+        outState.putString("id", id);
+        outState.putString("date", date );
+        outState.putParcelable("imageUri", uri);
+
     }
 
     private void register(){
